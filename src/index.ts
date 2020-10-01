@@ -9,9 +9,15 @@ function getPotatoes(): HTMLSpanElement {
   return document.getElementById("potatoes") as HTMLSpanElement;
 }
 
+function getPpsDispay(): HTMLSpanElement {
+  return document.getElementById("pps-display") as HTMLSpanElement;
+}
+
 function getBasket(): HTMLParagraphElement {
   return document.getElementById("basket") as HTMLParagraphElement;
 }
+
+step$.subscribe((s) => (getPpsDispay().innerText = s.toString()));
 
 potatoes$.subscribe((p) => {
   getPotatoes().innerText = p.toString();
@@ -35,6 +41,6 @@ timer$.subscribe(() => console.log("tick"));
 
 timer$.subscribe(() => {
   combineLatest([potatoes$, step$])
-    .pipe(take(1))
+    .pipe(take(1)) // we only want to look at the latest as of the time this fires, otherwise this is recursive
     .subscribe(([curr, step]) => potatoes$.next(curr + step));
 });
