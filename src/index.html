@@ -2,6 +2,11 @@
 <html>
   <head>
     <title>timer</title>
+    <style>
+      #potato-butt {
+        width: 400px;
+      }
+    </style>
   </head>
   <body>
     <h1>I am <span id="potatoes"></span> potato(es)</h1>
@@ -15,7 +20,21 @@
       min="-100"
       max="100"
       step="1"
+      list="tickmarks"
     /><span id="pps-display"></span>
+    <datalist id="tickmarks">
+      <option value="-100" label="-100"></option>
+      <option value="-80"></option>
+      <option value="-60"></option>
+      <option value="-40"></option>
+      <option value="-20"></option>
+      <option value="0" label="0"></option>
+      <option value="20"></option>
+      <option value="40"></option>
+      <option value="60"></option>
+      <option value="80"></option>
+      <option value="100" label="100"></option>
+    </datalist>
     <p id="basket"></p>
     <script type="text/javascript" src="index.ts"></script>
   </body>
