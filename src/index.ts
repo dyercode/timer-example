@@ -5,8 +5,6 @@ let timer$ = interval(1000);
 let step$: Subject<number> = new BehaviorSubject(0);
 let potatoes$ = new BehaviorSubject(0);
 
-timer$.subscribe(() => console.log("tick"));
-
 function getPotatoes(): HTMLSpanElement {
   return document.getElementById("potatoes") as HTMLSpanElement;
 }
@@ -20,11 +18,7 @@ potatoes$.subscribe((p) => {
 });
 
 potatoes$.subscribe((p) => {
-  if (p > 0) {
-    getBasket().innerText = "🥔".repeat(p);
-  } else {
-    getBasket().innerText = "🥕".repeat(Math.abs(p));
-  }
+  getBasket().innerText = p > 0 ? "🥔".repeat(p) : "🥕".repeat(Math.abs(p));
 });
 
 (document.getElementById("potato-butt") as HTMLInputElement).addEventListener(
@@ -36,6 +30,8 @@ potatoes$.subscribe((p) => {
     }
   }
 );
+
+timer$.subscribe(() => console.log("tick"));
 
 timer$.subscribe(() => {
   combineLatest([potatoes$, step$])
