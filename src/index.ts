@@ -1,24 +1,25 @@
-import { BehaviorSubject, interval } from "rxjs";
+import { BehaviorSubject, combineLatest, interval, Subject } from "rxjs";
 
-let timer = interval(1000);
-let step = new BehaviorSubject(0);
+let timer$ = interval(1000);
+let step$: Subject<number> = new BehaviorSubject(0);
 
-timer.subscribe(() => console.log("tick"));
+timer$.subscribe(() => console.log("tick"));
 
 function getPotatoes(): HTMLSpanElement {
   return document.getElementById("potatoes") as HTMLSpanElement;
 }
 
-let pps = document.getElementById("potato-butt") as HTMLInputElement;
-
-pps.addEventListener("change", (event) => {
-  let nextStep = parseInt((<HTMLInputElement>event.target).value);
-  if (nextStep !== undefined && nextStep !== null) {
-    step.next(nextStep);
+(document.getElementById("potato-butt") as HTMLInputElement).addEventListener(
+  "change",
+  (event) => {
+    let nextStep = parseInt((<HTMLInputElement>event.target).value);
+    if (nextStep !== undefined && nextStep !== null) {
+      step$.next(nextStep);
+    }
   }
-});
+);
 
-timer.subscribe(() => {
+combineLatest([step$, timer$]).subscribe(([step, _tick]) => {
   let currentPotatos: number = parseInt(getPotatoes().innerText) || 0;
-  getPotatoes().innerText = (currentPotatos + step.getValue()).toString();
+  getPotatoes().innerText = (currentPotatos + step).toString();
 });
